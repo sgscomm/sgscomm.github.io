@@ -1,940 +1,509 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>Portfolio — Network & Operations Engineering</title>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Shadman Gawhar — Network Planning & Design Engineer</title>
+<meta name="description" content="Portfolio of Shadman Gawhar — Network Planning & Design Engineer building internal tools, dashboards, and automation platforms with Python and Streamlit."/>
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
-<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,300&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=IBM+Plex+Mono:wght@400;600&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
 <style>
-  :root {
-    --bg:       #070c1a;
-    --surface:  #0b1120;
-    --card:     #0f172a;
-    --card-alt: #111827;
-    --border:   #1e2d4a;
-    --cyan:     #00d4ff;
-    --blue:     #3b82f6;
-    --purple:   #818cf8;
-    --green:    #10b981;
-    --orange:   #f59e0b;
-    --red:      #f43f5e;
-    --text:     #e2e8f0;
-    --muted:    #64748b;
-    --dim:      #334155;
-    --glow:     rgba(0, 212, 255, 0.12);
-    --glow-b:   rgba(59, 130, 246, 0.1);
-  }
-
-  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
-  html { scroll-behavior: smooth; }
-
-  body {
-    background: var(--bg);
-    color: var(--text);
-    font-family: 'DM Sans', sans-serif;
-    font-size: 15px;
-    line-height: 1.6;
-    overflow-x: hidden;
-  }
-
-  /* ── GRID BACKGROUND ── */
-  body::before {
-    content: '';
-    position: fixed;
-    inset: 0;
-    background-image:
-      linear-gradient(rgba(0,212,255,0.03) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(0,212,255,0.03) 1px, transparent 1px);
-    background-size: 48px 48px;
-    pointer-events: none;
-    z-index: 0;
-  }
-
-  /* ── TOPBAR ── */
-  nav {
-    position: fixed;
-    top: 0; left: 0; right: 0;
-    z-index: 100;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 0 40px;
-    height: 60px;
-    background: rgba(7,12,26,0.85);
-    backdrop-filter: blur(12px);
-    border-bottom: 1px solid var(--border);
-  }
-
-  .nav-logo {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 14px;
-    font-weight: 700;
-    color: var(--cyan);
-    letter-spacing: 0.02em;
-  }
-
-  .nav-logo span { color: var(--muted); font-weight: 400; }
-
-  .nav-links {
-    display: flex;
-    gap: 28px;
-    list-style: none;
-  }
-
-  .nav-links a {
-    font-size: 13px;
-    font-weight: 500;
-    color: var(--muted);
-    text-decoration: none;
-    letter-spacing: 0.04em;
-    text-transform: uppercase;
-    transition: color 0.2s;
-  }
-  .nav-links a:hover { color: var(--cyan); }
-
-  /* ── WRAPPER ── */
-  .wrap {
-    position: relative;
-    z-index: 1;
-    max-width: 1100px;
-    margin: 0 auto;
-    padding: 0 32px;
-  }
-
-  /* ── HERO ── */
-  header {
-    padding: 160px 0 100px;
-    position: relative;
-  }
-
-  .hero-tag {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 11px;
-    color: var(--cyan);
-    background: rgba(0,212,255,0.07);
-    border: 1px solid rgba(0,212,255,0.2);
-    border-radius: 20px;
-    padding: 5px 14px;
-    margin-bottom: 28px;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    animation: fadeUp 0.6s ease both;
-  }
-
-  .hero-tag::before {
-    content: '';
-    display: block;
-    width: 6px; height: 6px;
-    border-radius: 50%;
-    background: var(--cyan);
-    animation: pulse 2s infinite;
-  }
-
-  h1 {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: clamp(36px, 6vw, 68px);
-    font-weight: 700;
-    line-height: 1.05;
-    letter-spacing: -0.02em;
-    margin-bottom: 24px;
-    animation: fadeUp 0.6s 0.1s ease both;
-  }
-
-  h1 .line1 { display: block; color: var(--text); }
-  h1 .accent { color: var(--cyan); }
-
-  .hero-desc {
-    max-width: 560px;
-    font-size: 17px;
-    font-weight: 300;
-    color: var(--muted);
-    line-height: 1.7;
-    margin-bottom: 40px;
-    animation: fadeUp 0.6s 0.2s ease both;
-  }
-
-  .hero-actions {
-    display: flex;
-    gap: 16px;
-    flex-wrap: wrap;
-    animation: fadeUp 0.6s 0.3s ease both;
-  }
-
-  .btn {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    padding: 12px 24px;
-    border-radius: 8px;
-    font-size: 14px;
-    font-weight: 600;
-    text-decoration: none;
-    transition: all 0.2s;
-    cursor: pointer;
-    border: none;
-  }
-
-  .btn-primary {
-    background: var(--cyan);
-    color: #070c1a;
-    box-shadow: 0 0 24px rgba(0,212,255,0.25);
-  }
-  .btn-primary:hover { background: #33dcff; box-shadow: 0 0 36px rgba(0,212,255,0.4); }
-
-  .btn-ghost {
-    background: transparent;
-    color: var(--text);
-    border: 1px solid var(--border);
-  }
-  .btn-ghost:hover { border-color: var(--cyan); color: var(--cyan); }
-
-  /* ── STATS STRIP ── */
-  .stats-strip {
-    display: flex;
-    gap: 0;
-    margin-bottom: 100px;
-    border: 1px solid var(--border);
-    border-radius: 12px;
-    overflow: hidden;
-    background: var(--card);
-    animation: fadeUp 0.6s 0.4s ease both;
-  }
-
-  .stat {
-    flex: 1;
-    padding: 24px 28px;
-    border-right: 1px solid var(--border);
-    text-align: center;
-  }
-  .stat:last-child { border-right: none; }
-
-  .stat-num {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 32px;
-    font-weight: 700;
-    color: var(--cyan);
-    line-height: 1;
-    margin-bottom: 6px;
-  }
-
-  .stat-label {
-    font-size: 12px;
-    color: var(--muted);
-    letter-spacing: 0.06em;
-    text-transform: uppercase;
-  }
-
-  /* ── SECTION HEADERS ── */
-  .section-label {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 11px;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    color: var(--cyan);
-    margin-bottom: 12px;
-    display: flex;
-    align-items: center;
-    gap: 12px;
-  }
-
-  .section-label::after {
-    content: '';
-    flex: 1;
-    height: 1px;
-    background: linear-gradient(to right, var(--border), transparent);
-  }
-
-  .section-title {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: clamp(24px, 3vw, 36px);
-    font-weight: 700;
-    margin-bottom: 12px;
-    letter-spacing: -0.02em;
-  }
-
-  .section-sub {
-    color: var(--muted);
-    font-size: 15px;
-    font-weight: 300;
-    margin-bottom: 52px;
-    max-width: 500px;
-  }
-
-  /* ── PROJECT GRID ── */
-  #projects { padding: 80px 0; }
-
-  .projects-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-    gap: 20px;
-  }
-
-  .project-card {
-    background: var(--card);
-    border: 1px solid var(--border);
-    border-radius: 14px;
-    padding: 28px;
-    position: relative;
-    overflow: hidden;
-    transition: border-color 0.3s, transform 0.3s, box-shadow 0.3s;
-    cursor: default;
-    animation: fadeUp 0.5s ease both;
-  }
-
-  .project-card::before {
-    content: '';
-    position: absolute;
-    top: 0; left: 0; right: 0;
-    height: 2px;
-    background: linear-gradient(90deg, transparent, var(--accent-color, var(--cyan)), transparent);
-    opacity: 0;
-    transition: opacity 0.3s;
-  }
-
-  .project-card:hover {
-    border-color: var(--accent-color, var(--cyan));
-    transform: translateY(-4px);
-    box-shadow: 0 16px 48px rgba(0,0,0,0.4), 0 0 0 1px var(--accent-color, var(--cyan)) inset;
-  }
-
-  .project-card:hover::before { opacity: 1; }
-
-  .card-top {
-    display: flex;
-    align-items: flex-start;
-    justify-content: space-between;
-    margin-bottom: 20px;
-  }
-
-  .card-icon {
-    width: 48px; height: 48px;
-    border-radius: 12px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 22px;
-    background: rgba(255,255,255,0.04);
-    border: 1px solid var(--border);
-    flex-shrink: 0;
-  }
-
-  .card-badge {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 10px;
-    font-weight: 600;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    padding: 4px 10px;
-    border-radius: 20px;
-    border: 1px solid;
-  }
-
-  .badge-tool    { color: #10b981; border-color: rgba(16,185,129,0.3); background: rgba(16,185,129,0.07); }
-  .badge-dash    { color: #3b82f6; border-color: rgba(59,130,246,0.3); background: rgba(59,130,246,0.07); }
-  .badge-auto    { color: #f59e0b; border-color: rgba(245,158,11,0.3); background: rgba(245,158,11,0.07); }
-  .badge-platform{ color: #818cf8; border-color: rgba(129,140,248,0.3); background: rgba(129,140,248,0.07); }
-
-  .card-title {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 18px;
-    font-weight: 700;
-    color: var(--text);
-    margin-bottom: 10px;
-    letter-spacing: -0.01em;
-  }
-
-  .card-desc {
-    font-size: 14px;
-    color: var(--muted);
-    line-height: 1.65;
-    margin-bottom: 20px;
-  }
-
-  .card-features {
-    list-style: none;
-    margin-bottom: 22px;
-    display: flex;
-    flex-direction: column;
-    gap: 6px;
-  }
-
-  .card-features li {
-    font-size: 13px;
-    color: #94a3b8;
-    display: flex;
-    align-items: flex-start;
-    gap: 8px;
-  }
-
-  .card-features li::before {
-    content: '›';
-    color: var(--accent-color, var(--cyan));
-    font-weight: 700;
-    flex-shrink: 0;
-    margin-top: 1px;
-  }
-
-  .card-tags {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 6px;
-  }
-
-  .tag {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 10px;
-    padding: 3px 9px;
-    border-radius: 4px;
-    background: rgba(255,255,255,0.04);
-    border: 1px solid var(--border);
-    color: var(--muted);
-    letter-spacing: 0.04em;
-  }
-
-  /* ── FEATURED CARD (wide) ── */
-  .project-card.featured {
-    grid-column: 1 / -1;
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 32px;
-    align-items: start;
-  }
-
-  .featured .card-right { display: flex; flex-direction: column; gap: 14px; }
-
-  .featured-label {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 10px;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    color: var(--purple);
-    margin-bottom: 4px;
-  }
-
-  .featured .card-title { font-size: 26px; }
-  .featured .card-desc  { font-size: 15px; }
-
-  .module-list {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-  }
-
-  .module-item {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    padding: 12px 16px;
-    background: rgba(255,255,255,0.02);
-    border: 1px solid var(--border);
-    border-radius: 8px;
-    font-size: 13px;
-  }
-
-  .module-dot {
-    width: 8px; height: 8px;
-    border-radius: 50%;
-    flex-shrink: 0;
-  }
-
-  .module-name { font-weight: 600; color: var(--text); margin-right: 4px; }
-  .module-desc { color: var(--muted); }
-
-  /* ── SKILLS SECTION ── */
-  #skills { padding: 80px 0; border-top: 1px solid var(--border); }
-
-  .skills-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-    gap: 14px;
-  }
-
-  .skill-pill {
-    padding: 14px 18px;
-    background: var(--card);
-    border: 1px solid var(--border);
-    border-radius: 10px;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    transition: border-color 0.2s, background 0.2s;
-    animation: fadeUp 0.4s ease both;
-  }
-
-  .skill-pill:hover {
-    border-color: var(--blue);
-    background: var(--card-alt);
-  }
-
-  .skill-icon { font-size: 18px; }
-
-  .skill-name {
-    font-size: 13px;
-    font-weight: 500;
-    color: var(--text);
-  }
-
-  .skill-cat {
-    font-size: 11px;
-    color: var(--muted);
-  }
-
-  /* ── CONTACT / FOOTER ── */
-  #contact {
-    padding: 80px 0 60px;
-    border-top: 1px solid var(--border);
-    text-align: center;
-  }
-
-  .contact-box {
-    max-width: 520px;
-    margin: 0 auto;
-  }
-
-  .contact-box p {
-    color: var(--muted);
-    margin-bottom: 32px;
-    font-weight: 300;
-  }
-
-  footer {
-    border-top: 1px solid var(--border);
-    padding: 24px 32px;
-    text-align: center;
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 11px;
-    color: var(--dim);
-    position: relative;
-    z-index: 1;
-  }
-
-  footer span { color: var(--muted); }
-
-  /* ── ANIMATIONS ── */
-  @keyframes fadeUp {
-    from { opacity: 0; transform: translateY(18px); }
-    to   { opacity: 1; transform: translateY(0); }
-  }
-
-  @keyframes pulse {
-    0%, 100% { opacity: 1; }
-    50%       { opacity: 0.3; }
-  }
-
-  /* Stagger project cards */
-  .project-card:nth-child(1)  { animation-delay: 0.05s; }
-  .project-card:nth-child(2)  { animation-delay: 0.10s; }
-  .project-card:nth-child(3)  { animation-delay: 0.15s; }
-  .project-card:nth-child(4)  { animation-delay: 0.20s; }
-  .project-card:nth-child(5)  { animation-delay: 0.25s; }
-  .project-card:nth-child(6)  { animation-delay: 0.30s; }
-  .project-card:nth-child(7)  { animation-delay: 0.35s; }
-  .project-card:nth-child(8)  { animation-delay: 0.40s; }
-
-  .skill-pill:nth-child(odd)  { animation-delay: 0.05s; }
-  .skill-pill:nth-child(even) { animation-delay: 0.10s; }
-
-  /* Responsive */
-  @media (max-width: 768px) {
-    nav { padding: 0 20px; }
-    .nav-links { display: none; }
-    .wrap { padding: 0 20px; }
-    header { padding: 100px 0 60px; }
-    .stats-strip { flex-direction: column; }
-    .stat { border-right: none; border-bottom: 1px solid var(--border); }
-    .stat:last-child { border-bottom: none; }
-    .project-card.featured {
-      grid-column: auto;
-      display: flex;
-      flex-direction: column;
-    }
-    h1 { font-size: 32px; }
-  }
+:root {
+  --bg:        #050b18;
+  --surf:      #0a1020;
+  --card:      #0d1526;
+  --border:    #162036;
+  --border-hi: #1e3050;
+  --cyan:      #00e5ff;
+  --cyan-dim:  rgba(0,229,255,.12);
+  --blue:      #2979ff;
+  --violet:    #7c3aed;
+  --green:     #00e676;
+  --amber:     #ffab00;
+  --text:      #e8f0fe;
+  --muted:     #546e8a;
+  --dim:       #1e2d42;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;font-size:15px;line-height:1.65;overflow-x:hidden}
+::-webkit-scrollbar{width:4px}
+::-webkit-scrollbar-track{background:var(--bg)}
+::-webkit-scrollbar-thumb{background:var(--cyan);border-radius:2px}
+
+#progress-bar{position:fixed;top:0;left:0;height:3px;width:0%;background:linear-gradient(90deg,var(--blue),var(--cyan));z-index:999;transition:width .1s linear}
+#bg-canvas{position:fixed;inset:0;z-index:0;opacity:.5}
+
+nav{position:fixed;top:3px;left:0;right:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:0 48px;height:58px;background:rgba(5,11,24,.85);backdrop-filter:blur(16px);border-bottom:1px solid var(--border);transition:border-color .3s}
+nav.scrolled{border-color:var(--border-hi)}
+.nav-logo{font-family:'IBM Plex Mono',monospace;font-size:13px;font-weight:600;color:var(--cyan);letter-spacing:.03em;display:flex;align-items:center;gap:10px}
+.logo-dot{width:8px;height:8px;border-radius:50%;background:var(--cyan);animation:breathe 2.5s ease infinite}
+.nav-links{display:flex;gap:32px;list-style:none}
+.nav-links a{font-size:12px;font-weight:500;color:var(--muted);text-decoration:none;letter-spacing:.08em;text-transform:uppercase;transition:color .2s;position:relative}
+.nav-links a::after{content:'';position:absolute;bottom:-4px;left:0;width:0;height:1px;background:var(--cyan);transition:width .25s}
+.nav-links a:hover{color:var(--cyan)}
+.nav-links a:hover::after{width:100%}
+.nav-cta{font-family:'IBM Plex Mono',monospace;font-size:11px;font-weight:600;color:var(--cyan);border:1px solid rgba(0,229,255,.4);padding:7px 16px;border-radius:6px;text-decoration:none;transition:background .2s,box-shadow .2s;letter-spacing:.06em}
+.nav-cta:hover{background:var(--cyan-dim);box-shadow:0 0 20px rgba(0,229,255,.2)}
+
+.wrap{position:relative;z-index:1;max-width:1120px;margin:0 auto;padding:0 40px}
+
+header{padding:148px 0 90px;position:relative}
+.hero-eyebrow{display:inline-flex;align-items:center;gap:10px;font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--cyan);letter-spacing:.1em;text-transform:uppercase;background:var(--cyan-dim);border:1px solid rgba(0,229,255,.2);border-radius:4px;padding:6px 14px;margin-bottom:32px;opacity:0;animation:slideUp .6s .1s ease forwards}
+.eyebrow-dot{width:6px;height:6px;border-radius:50%;background:var(--cyan);animation:breathe 2s infinite}
+h1{font-family:'Syne',sans-serif;font-size:clamp(40px,6.5vw,80px);font-weight:800;line-height:1.0;letter-spacing:-.03em;margin-bottom:28px;opacity:0;animation:slideUp .7s .2s ease forwards}
+h1 .name{display:block;color:var(--text)}
+h1 .role{display:block;background:linear-gradient(135deg,var(--cyan) 0%,var(--blue) 60%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.hero-desc{max-width:560px;font-size:16px;font-weight:300;color:var(--muted);line-height:1.75;margin-bottom:44px;opacity:0;animation:slideUp .7s .35s ease forwards}
+.hero-actions{display:flex;gap:14px;flex-wrap:wrap;opacity:0;animation:slideUp .7s .5s ease forwards}
+.btn{display:inline-flex;align-items:center;gap:8px;padding:13px 26px;border-radius:8px;font-size:14px;font-weight:600;text-decoration:none;transition:all .25s;cursor:pointer;border:none;letter-spacing:.01em}
+.btn-primary{background:var(--cyan);color:#050b18;box-shadow:0 0 30px rgba(0,229,255,.3)}
+.btn-primary:hover{background:#33ebff;box-shadow:0 0 50px rgba(0,229,255,.5);transform:translateY(-2px)}
+.btn-outline{background:transparent;color:var(--text);border:1px solid var(--border-hi)}
+.btn-outline:hover{border-color:var(--cyan);color:var(--cyan);transform:translateY(-2px)}
+
+.stats{display:grid;grid-template-columns:repeat(4,1fr);border:1px solid var(--border);border-radius:14px;overflow:hidden;margin:80px 0;background:var(--card)}
+.stat{padding:28px 24px;text-align:center;border-right:1px solid var(--border);position:relative;overflow:hidden}
+.stat:last-child{border-right:none}
+.stat::before{content:'';position:absolute;top:0;left:50%;transform:translateX(-50%);width:60%;height:2px;background:linear-gradient(90deg,transparent,var(--cyan),transparent);opacity:0;transition:opacity .4s}
+.stat:hover::before{opacity:1}
+.stat-num{font-family:'IBM Plex Mono',monospace;font-size:36px;font-weight:600;color:var(--cyan);line-height:1;margin-bottom:8px;display:block}
+.stat-label{font-size:11px;color:var(--muted);letter-spacing:.08em;text-transform:uppercase}
+
+.s-label{font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--cyan);display:flex;align-items:center;gap:14px;margin-bottom:14px}
+.s-label::before{content:'';width:28px;height:1px;background:var(--cyan)}
+.s-label::after{content:'';flex:1;height:1px;background:linear-gradient(to right,var(--border),transparent)}
+.s-title{font-family:'Syne',sans-serif;font-size:clamp(26px,3.5vw,42px);font-weight:800;letter-spacing:-.02em;margin-bottom:14px}
+.s-sub{color:var(--muted);font-size:15px;font-weight:300;margin-bottom:56px;max-width:480px}
+section{padding:90px 0;border-top:1px solid var(--border)}
+
+/* ABOUT */
+#about .about-grid{display:grid;grid-template-columns:1fr 1.6fr;gap:60px;align-items:start}
+.photo-placeholder{aspect-ratio:3/4;border-radius:16px;background:var(--card);border:2px dashed var(--border-hi);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;color:var(--muted);font-size:13px;position:relative;overflow:hidden}
+.photo-placeholder::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(0,229,255,.04),transparent 60%)}
+.photo-icon{font-size:48px}
+.photo-hint{font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--muted);text-align:center;padding:0 20px;line-height:1.7}
+.about-content h3{font-family:'Syne',sans-serif;font-size:22px;font-weight:700;margin-bottom:16px;letter-spacing:-.01em}
+.about-content p{color:#8ba3be;font-size:15px;line-height:1.8;margin-bottom:20px;font-weight:300}
+.about-content p strong{color:var(--text);font-weight:500}
+.info-pills{display:flex;flex-wrap:wrap;gap:10px;margin-top:28px}
+.info-pill{display:flex;align-items:center;gap:8px;padding:8px 14px;border-radius:8px;background:var(--surf);border:1px solid var(--border);font-size:12px;color:var(--muted);transition:border-color .2s}
+.info-pill:hover{border-color:var(--cyan);color:var(--text)}
+
+/* TIMELINE */
+#timeline .tl-wrap{position:relative;padding-left:32px;border-left:2px solid var(--border);display:flex;flex-direction:column;gap:44px}
+.tl-item{position:relative}
+.tl-dot{position:absolute;left:-41px;top:4px;width:18px;height:18px;border-radius:50%;background:var(--bg);border:2px solid var(--cyan);display:flex;align-items:center;justify-content:center}
+.tl-dot::after{content:'';width:6px;height:6px;border-radius:50%;background:var(--cyan);animation:breathe 2s infinite}
+.tl-dot.inactive{border-color:var(--border)}
+.tl-dot.inactive::after{background:var(--muted);animation:none}
+.tl-time{font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--cyan);margin-bottom:6px;letter-spacing:.04em}
+.tl-role{font-family:'Syne',sans-serif;font-size:18px;font-weight:700;margin-bottom:4px}
+.tl-company{font-size:13px;color:var(--muted);margin-bottom:10px}
+.tl-desc{font-size:14px;color:#6b8aaa;line-height:1.7;font-weight:300;max-width:520px}
+.tl-current{display:inline-block;font-family:'IBM Plex Mono',monospace;font-size:9px;letter-spacing:.08em;text-transform:uppercase;background:rgba(0,229,255,.1);border:1px solid rgba(0,229,255,.3);color:var(--cyan);padding:2px 8px;border-radius:4px;margin-left:10px;vertical-align:middle}
+
+/* FILTER */
+.filter-bar{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:36px}
+.filter-btn{font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.06em;text-transform:uppercase;padding:7px 16px;border-radius:6px;background:transparent;border:1px solid var(--border);color:var(--muted);cursor:pointer;transition:all .2s}
+.filter-btn.active,.filter-btn:hover{background:var(--cyan-dim);border-color:rgba(0,229,255,.4);color:var(--cyan)}
+
+/* PROJECTS */
+.projects-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+.p-card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:26px;position:relative;overflow:hidden;transition:border-color .3s,transform .35s cubic-bezier(.22,.61,.36,1),box-shadow .35s;display:flex;flex-direction:column}
+.p-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--ac,var(--cyan)),transparent);opacity:0;transition:opacity .3s}
+.p-card::after{content:'';position:absolute;inset:0;border-radius:14px;background:radial-gradient(circle at var(--mx,50%) var(--my,50%),rgba(0,229,255,.06) 0%,transparent 65%);opacity:0;transition:opacity .3s;pointer-events:none}
+.p-card:hover::before,.p-card:hover::after{opacity:1}
+.p-card:hover{border-color:var(--ac,var(--cyan));transform:translateY(-6px);box-shadow:0 24px 60px rgba(0,0,0,.5),0 0 0 1px var(--ac,var(--cyan)) inset}
+.p-top{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:18px}
+.p-icon{width:44px;height:44px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:20px;background:rgba(255,255,255,.04);border:1px solid var(--border);flex-shrink:0}
+.p-badge{font-family:'IBM Plex Mono',monospace;font-size:9px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;padding:4px 10px;border-radius:20px;border:1px solid}
+.b-tool{color:#00e676;border-color:rgba(0,230,118,.3);background:rgba(0,230,118,.06)}
+.b-dash{color:#2979ff;border-color:rgba(41,121,255,.3);background:rgba(41,121,255,.06)}
+.b-auto{color:#ffab00;border-color:rgba(255,171,0,.3);background:rgba(255,171,0,.06)}
+.b-platform{color:#ce93d8;border-color:rgba(206,147,216,.3);background:rgba(206,147,216,.06)}
+.b-infra{color:#00e5ff;border-color:rgba(0,229,255,.3);background:rgba(0,229,255,.06)}
+.p-title{font-family:'Syne',sans-serif;font-size:17px;font-weight:700;margin-bottom:10px;letter-spacing:-.01em}
+.p-desc{font-size:13px;color:#6b8aaa;line-height:1.7;margin-bottom:16px;font-weight:300;flex:1}
+.p-feats{list-style:none;margin-bottom:18px;display:flex;flex-direction:column;gap:5px}
+.p-feats li{font-size:12px;color:#546e8a;display:flex;align-items:flex-start;gap:7px;line-height:1.5}
+.p-feats li::before{content:'›';color:var(--ac,var(--cyan));font-weight:700;flex-shrink:0;margin-top:1px}
+.p-tags{display:flex;flex-wrap:wrap;gap:5px;margin-top:auto}
+.tag{font-family:'IBM Plex Mono',monospace;font-size:9px;padding:3px 8px;border-radius:4px;background:rgba(255,255,255,.03);border:1px solid var(--dim);color:var(--muted);letter-spacing:.04em}
+
+.p-card.featured{grid-column:1 / -1;display:grid;grid-template-columns:1.1fr 1fr;gap:36px}
+.feat-badge{font-family:'IBM Plex Mono',monospace;font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:var(--violet);margin-bottom:2px}
+.featured .p-title{font-size:24px}
+.featured .p-desc{font-size:14px}
+.featured .p-right{display:flex;flex-direction:column;gap:12px;padding-top:8px}
+.module-list{display:flex;flex-direction:column;gap:10px}
+.module-row{display:flex;align-items:flex-start;gap:12px;padding:12px 14px;background:rgba(255,255,255,.02);border:1px solid var(--border);border-radius:8px;transition:border-color .2s}
+.module-row:hover{border-color:var(--border-hi)}
+.m-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;margin-top:4px}
+.m-name{font-weight:600;font-size:13px;color:var(--text)}
+.m-desc{font-size:12px;color:var(--muted);line-height:1.5}
+
+/* INFRA */
+#infra .infra-grid{display:grid;grid-template-columns:1fr 1fr;gap:24px}
+.infra-card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:28px;transition:border-color .3s,transform .3s}
+.infra-card:hover{border-color:var(--cyan);transform:translateY(-4px)}
+.infra-icon{font-size:32px;margin-bottom:16px}
+.infra-title{font-family:'Syne',sans-serif;font-size:19px;font-weight:700;margin-bottom:12px;letter-spacing:-.01em}
+.infra-desc{font-size:13px;color:#6b8aaa;line-height:1.7;margin-bottom:18px;font-weight:300}
+.infra-list{list-style:none;display:flex;flex-direction:column;gap:7px}
+.infra-list li{font-size:13px;color:#546e8a;display:flex;align-items:flex-start;gap:8px}
+.infra-list li::before{content:'▸';color:var(--cyan);flex-shrink:0}
+
+/* SKILLS */
+#skills .skills-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:12px}
+.sk-pill{padding:14px 16px;background:var(--card);border:1px solid var(--border);border-radius:10px;display:flex;align-items:center;gap:10px;transition:all .25s;cursor:default}
+.sk-pill:hover{border-color:var(--blue);background:var(--surf);transform:translateY(-2px)}
+.sk-icon{font-size:18px}
+.sk-name{font-size:13px;font-weight:500}
+.sk-cat{font-size:10px;color:var(--muted)}
+
+/* RECRUITER TIPS */
+#add .add-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.add-card{padding:22px;background:var(--card);border:1px dashed var(--border);border-radius:12px;transition:border-color .2s}
+.add-card:hover{border-color:var(--amber)}
+.add-num{font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--amber);margin-bottom:8px;letter-spacing:.06em}
+.add-title{font-family:'Syne',sans-serif;font-size:15px;font-weight:700;margin-bottom:8px}
+.add-body{font-size:13px;color:var(--muted);line-height:1.6}
+
+/* CONTACT */
+#contact{text-align:center}
+#contact .contact-inner{max-width:560px;margin:0 auto}
+#contact p{color:var(--muted);margin-bottom:40px;font-weight:300;font-size:15px}
+.social-row{display:flex;justify-content:center;gap:12px;flex-wrap:wrap;margin-top:28px}
+.social-btn{display:inline-flex;align-items:center;gap:8px;padding:10px 20px;border-radius:8px;font-size:13px;font-weight:600;text-decoration:none;border:1px solid var(--border);color:var(--muted);transition:all .2s}
+.social-btn:hover{border-color:var(--cyan);color:var(--cyan)}
+
+footer{border-top:1px solid var(--border);padding:28px 40px;text-align:center;font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--dim);position:relative;z-index:1}
+footer em{color:var(--muted);font-style:normal}
+
+/* REVEAL */
+.reveal{opacity:0;transform:translateY(24px);transition:opacity .65s ease,transform .65s ease}
+.reveal.visible{opacity:1;transform:translateY(0)}
+.reveal-delay-1{transition-delay:.1s}
+.reveal-delay-2{transition-delay:.2s}
+.reveal-delay-3{transition-delay:.3s}
+.reveal-delay-4{transition-delay:.4s}
+
+@keyframes slideUp{from{opacity:0;transform:translateY(22px)}to{opacity:1;transform:translateY(0)}}
+@keyframes breathe{0%,100%{opacity:1}50%{opacity:.3}}
+
+@media(max-width:900px){
+  nav{padding:0 20px}
+  .nav-links,.nav-cta{display:none}
+  .wrap{padding:0 20px}
+  header{padding:110px 0 60px}
+  .stats{grid-template-columns:repeat(2,1fr)}
+  .stat:nth-child(2){border-right:none}
+  .stat:nth-child(3){border-right:1px solid var(--border);border-top:1px solid var(--border)}
+  .stat:nth-child(4){border-top:1px solid var(--border)}
+  .projects-grid{grid-template-columns:1fr}
+  .p-card.featured{grid-template-columns:1fr}
+  #about .about-grid{grid-template-columns:1fr}
+  #infra .infra-grid{grid-template-columns:1fr}
+  #add .add-grid{grid-template-columns:1fr}
+}
 </style>
 </head>
 <body>
 
-<!-- NAV -->
-<nav>
-  <div class="nav-logo">
-    <span>~/</span>portfolio
-  </div>
+<div id="progress-bar"></div>
+<canvas id="bg-canvas"></canvas>
+
+<nav id="nav">
+  <div class="nav-logo"><div class="logo-dot"></div>shadman.gawhar</div>
   <ul class="nav-links">
+    <li><a href="#about">About</a></li>
+    <li><a href="#timeline">Journey</a></li>
     <li><a href="#projects">Projects</a></li>
+    <li><a href="#infra">Infrastructure</a></li>
     <li><a href="#skills">Skills</a></li>
-    <li><a href="#contact">Contact</a></li>
   </ul>
+  <a class="nav-cta" href="#contact">Contact →</a>
 </nav>
 
 <!-- HERO -->
 <header>
   <div class="wrap">
-    <div class="hero-tag">Network Planning &amp; Design Engineer</div>
-
+    <div class="hero-eyebrow"><div class="eyebrow-dot"></div>Network Planning &amp; Design · Bangladesh</div>
     <h1>
-      <span class="line1">Building tools that</span>
-      <span class="line1">plan <span class="accent">networks</span> better.</span>
+      <span class="name">Shadman Gawhar</span>
+      <span class="role">NPD Engineer &amp; Tool Builder</span>
     </h1>
-
     <p class="hero-desc">
-      I work in Network Planning &amp; Design, and I build the internal tools that power it — 
-      dashboards, automation scripts, and network intelligence platforms using Python and Streamlit, 
-      turning complex infrastructure data into decisions.
+      I work in <strong style="color:var(--text)">Network Planning &amp; Design</strong>, and I build the internal tools that power it.
+      From interactive topology dashboards to SSH automation platforms and server-side VM infrastructure —
+      I turn complex network data into decisions.
     </p>
-
     <div class="hero-actions">
-      <a class="btn btn-primary" href="#projects">View Projects ↓</a>
-      <a class="btn btn-ghost" href="#contact">Get in Touch</a>
+      <a class="btn btn-primary" href="#projects">See My Projects ↓</a>
+      <a class="btn btn-outline" href="#contact">Get in Touch</a>
     </div>
   </div>
 </header>
 
 <!-- STATS -->
 <div class="wrap">
-  <div class="stats-strip">
-    <div class="stat">
-      <div class="stat-num">9</div>
-      <div class="stat-label">Apps Built</div>
-    </div>
-    <div class="stat">
-      <div class="stat-num">~1.8M</div>
-      <div class="stat-label">Lines of Python</div>
-    </div>
-    <div class="stat">
-      <div class="stat-num">5+</div>
-      <div class="stat-label">Live Deployments</div>
-    </div>
-    <div class="stat">
-      <div class="stat-num">NPD</div>
-      <div class="stat-label">Domain</div>
-    </div>
+  <div class="stats reveal">
+    <div class="stat"><span class="stat-num" data-count="9">0</span><div class="stat-label">Apps Built</div></div>
+    <div class="stat"><span class="stat-num" data-count="180" data-suffix="k+">0</span><div class="stat-label">Lines of Python</div></div>
+    <div class="stat"><span class="stat-num" data-count="5" data-suffix="+">0</span><div class="stat-label">Live Deployments</div></div>
+    <div class="stat"><span class="stat-num" data-count="2">0</span><div class="stat-label">Years Building</div></div>
   </div>
 </div>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="wrap">
+    <div class="s-label reveal">About</div>
+    <div class="about-grid">
+      <div class="photo-placeholder reveal">
+        <div class="photo-icon">🧑‍💻</div>
+        <div class="photo-hint">Replace this with your photo.<br/>Portrait crop, plain background.<br/>Makes a huge recruiter difference.</div>
+      </div>
+      <div class="about-content">
+        <h3 class="reveal">Engineering the tools that plan the network.</h3>
+        <p class="reveal reveal-delay-1">
+          I'm a <strong>Network Planning &amp; Design Engineer</strong> who bridges the gap between raw infrastructure data
+          and the people who need to act on it. My background in Network Operations gave me a deep understanding
+          of how networks fail — now in NPD, I use that to design systems that don't.
+        </p>
+        <p class="reveal reveal-delay-2">
+          Alongside my core engineering role, I independently build <strong>internal tooling</strong> —
+          Streamlit dashboards, SSH automation platforms, geospatial analysis apps, and KPI reporting systems.
+          I also manage the server-side infrastructure these tools run on, including
+          <strong>Proxmox virtualisation environments</strong> and VM logical networking.
+        </p>
+        <p class="reveal reveal-delay-3">
+          I believe the best engineers obsess over the experience of the people using their work.
+          Every tool I build prioritises clarity, reliability, and speed.
+        </p>
+        <div class="info-pills reveal reveal-delay-4">
+          <div class="info-pill"><span>📍</span><span>Dhaka, Bangladesh</span></div>
+          <div class="info-pill"><span>🏢</span><span>Network Planning &amp; Design</span></div>
+          <div class="info-pill"><span>🐍</span><span>Python · Streamlit</span></div>
+          <div class="info-pill"><span>🖥️</span><span>Proxmox · VMs</span></div>
+          <div class="info-pill"><span>📡</span><span>Network Engineering</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TIMELINE -->
+<section id="timeline">
+  <div class="wrap">
+    <div class="s-label reveal">Journey</div>
+    <h2 class="s-title reveal">Career Path</h2>
+    <p class="s-sub reveal">From operations to planning — building tools all the way.</p>
+    <div class="tl-wrap reveal">
+      <div class="tl-item">
+        <div class="tl-dot"></div>
+        <div class="tl-body">
+          <div class="tl-time">Current Position</div>
+          <div class="tl-role">Network Planning &amp; Design Engineer <span class="tl-current">Current</span></div>
+          <div class="tl-company">Your Company · Dhaka, Bangladesh</div>
+          <div class="tl-desc">Responsible for designing and planning network topology, capacity, and expansion. Builds internal tooling — dashboards, automation scripts, and infrastructure — to support planning workflows. Manages Proxmox-based server environments and VM deployments.</div>
+        </div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-dot inactive"></div>
+        <div class="tl-body">
+          <div class="tl-time" style="color:var(--muted)">Previous Position</div>
+          <div class="tl-role">Network Operations Center (NOC) Engineer</div>
+          <div class="tl-company">Your Company · Dhaka, Bangladesh</div>
+          <div class="tl-desc">Monitored and managed live network infrastructure, handled incident response, and maintained uptime SLAs. Developed deep operational knowledge of how large networks behave under pressure — the foundation for all the tools built since.</div>
+        </div>
+      </div>
+    </div>
+    <p style="margin-top:28px;font-size:13px;color:var(--muted);font-style:italic;padding-left:32px">✏️ Fill in your actual company name, exact dates, and any additional roles.</p>
+  </div>
+</section>
 
 <!-- PROJECTS -->
 <section id="projects">
   <div class="wrap">
-    <div class="section-label">Work</div>
-    <h2 class="section-title">Projects</h2>
-    <p class="section-sub">Internal tools and platforms built for real network operations environments.</p>
-
+    <div class="s-label reveal">Work</div>
+    <h2 class="s-title reveal">Projects</h2>
+    <p class="s-sub reveal">Internal tools and platforms built for real network environments.</p>
+    <div class="filter-bar reveal">
+      <button class="filter-btn active" data-filter="all">All</button>
+      <button class="filter-btn" data-filter="platform">Platforms</button>
+      <button class="filter-btn" data-filter="dash">Dashboards</button>
+      <button class="filter-btn" data-filter="auto">Automation</button>
+      <button class="filter-btn" data-filter="tool">Tools</button>
+    </div>
     <div class="projects-grid">
 
-      <!-- FEATURED: COMPASS (multi-module) -->
-      <div class="project-card featured" style="--accent-color: #818cf8;">
-        <div class="card-left">
-          <div class="card-top">
-            <div class="card-icon">🧭</div>
-            <span class="card-badge badge-platform">Platform</span>
-          </div>
-          <div class="featured-label">★ Featured · Multi-module Platform</div>
-          <div class="card-title">Compass</div>
-          <div class="card-desc">
-            A comprehensive network intelligence platform providing FID lifecycle management, interactive topology visualisation, 
-            and multi-hop path analysis across the entire infrastructure. Built as a modular multi-page Streamlit application 
-            with Leaflet-powered geographic maps and NetworkX graph engine under the hood.
-          </div>
-          <div class="card-tags">
-            <span class="tag">Streamlit</span>
-            <span class="tag">NetworkX</span>
-            <span class="tag">PyVis</span>
-            <span class="tag">Leaflet</span>
-            <span class="tag">GeoPy</span>
-            <span class="tag">FTP</span>
-            <span class="tag">SQLite</span>
-            <span class="tag">Pydeck</span>
-          </div>
+      <div class="p-card featured" style="--ac:#7c3aed" data-cat="platform">
+        <div class="p-left">
+          <div class="p-top"><div class="p-icon">🧭</div><span class="p-badge b-platform">Platform</span></div>
+          <div class="feat-badge">★ Featured · Multi-module Platform</div>
+          <div class="p-title">Compass</div>
+          <div class="p-desc">A full network intelligence platform providing FID lifecycle management, interactive topology visualisation, and multi-hop path analysis. Built as a modular multi-page Streamlit app with Leaflet geo-maps and a NetworkX graph engine — actively used in daily operations.</div>
+          <div class="p-tags"><span class="tag">Streamlit</span><span class="tag">NetworkX</span><span class="tag">PyVis</span><span class="tag">Leaflet</span><span class="tag">GeoPy</span><span class="tag">FTP</span><span class="tag">SQLite</span><span class="tag">Pydeck</span></div>
         </div>
-
-        <div class="card-right">
+        <div class="p-right">
           <div class="module-list">
-            <div class="module-item">
-              <div class="module-dot" style="background:#818cf8;"></div>
-              <div>
-                <span class="module-name">FID List</span>
-                <span class="module-desc">— Browse, search and manage active Forwarding IDs with live session validation</span>
-              </div>
-            </div>
-            <div class="module-item">
-              <div class="module-dot" style="background:#60a5fa;"></div>
-              <div>
-                <span class="module-name">FID Details</span>
-                <span class="module-desc">— Port-level drill-down, capacity maps, and aggregation key matching</span>
-              </div>
-            </div>
-            <div class="module-item">
-              <div class="module-dot" style="background:#34d399;"></div>
-              <div>
-                <span class="module-name">Path Analyzer</span>
-                <span class="module-desc">— Multi-hop route tracing with interactive graph overlays and throughput data</span>
-              </div>
-            </div>
-            <div class="module-item">
-              <div class="module-dot" style="background:#f59e0b;"></div>
-              <div>
-                <span class="module-name">Main App</span>
-                <span class="module-desc">— Unified navigation shell with geo-distance calculator and activity logging</span>
-              </div>
-            </div>
+            <div class="module-row"><div class="m-dot" style="background:#818cf8"></div><div><div class="m-name">FID List</div><div class="m-desc">Browse, search and manage active Forwarding IDs with live session validation</div></div></div>
+            <div class="module-row"><div class="m-dot" style="background:#60a5fa"></div><div><div class="m-name">FID Details</div><div class="m-desc">Port-level drill-down, capacity maps, and aggregation key matching</div></div></div>
+            <div class="module-row"><div class="m-dot" style="background:#34d399"></div><div><div class="m-name">Path Analyzer</div><div class="m-desc">Multi-hop route tracing with interactive graph overlays and throughput data</div></div></div>
+            <div class="module-row"><div class="m-dot" style="background:#f59e0b"></div><div><div class="m-name">Main App Shell</div><div class="m-desc">Unified navigation, geo-distance calculator and activity audit logging</div></div></div>
           </div>
         </div>
       </div>
 
-      <!-- LINKTRACK InC -->
-      <div class="project-card" style="--accent-color: #00d4ff;">
-        <div class="card-top">
-          <div class="card-icon">🔗</div>
-          <span class="card-badge badge-dash">Dashboard</span>
-        </div>
-        <div class="card-title">LinkTrack InC</div>
-        <div class="card-desc">
-          Advanced network link monitoring and visualisation platform with built-in SSH device access. 
-          Features interactive graph topology, real-time Telegram alerts, and live device configuration 
-          retrieval via jump-host tunnelling.
-        </div>
-        <ul class="card-features">
-          <li>Interactive PyVis topology maps with custom colour schemes</li>
-          <li>SSH via Paramiko through jump host for live config pulls</li>
-          <li>Telegram bot integration for real-time incident alerts</li>
-          <li>Concurrent link-state processing with ThreadPoolExecutor</li>
-          <li>Geodesic distance calculation between nodes</li>
-        </ul>
-        <div class="card-tags">
-          <span class="tag">Streamlit</span>
-          <span class="tag">Paramiko</span>
-          <span class="tag">NetworkX</span>
-          <span class="tag">Telegram Bot</span>
-          <span class="tag">Selenium</span>
-          <span class="tag">GeoPy</span>
-        </div>
+      <div class="p-card" style="--ac:#00e5ff" data-cat="dash">
+        <div class="p-top"><div class="p-icon">🔗</div><span class="p-badge b-dash">Dashboard</span></div>
+        <div class="p-title">LinkTrack InC</div>
+        <div class="p-desc">Advanced network link monitoring with SSH device access, real-time Telegram alerts, and live device config retrieval via jump-host tunnelling.</div>
+        <ul class="p-feats"><li>Interactive PyVis topology with custom colour schemes</li><li>SSH via Paramiko through jump host for live config pulls</li><li>Telegram bot for real-time incident alerts</li><li>Concurrent processing with ThreadPoolExecutor</li></ul>
+        <div class="p-tags"><span class="tag">Paramiko</span><span class="tag">NetworkX</span><span class="tag">Telegram Bot</span><span class="tag">Selenium</span><span class="tag">GeoPy</span></div>
       </div>
 
-      <!-- LINKTRACK -->
-      <div class="project-card" style="--accent-color: #38bdf8;">
-        <div class="card-top">
-          <div class="card-icon">📡</div>
-          <span class="card-badge badge-dash">Dashboard</span>
-        </div>
-        <div class="card-title">LinkTrack</div>
-        <div class="card-desc">
-          Core network link tracking dashboard with graph-based visualisation of node relationships, 
-          FTP-sourced topology data, and path analysis. The predecessor to LinkTrack InC with a 
-          cleaner, lighter footprint.
-        </div>
-        <ul class="card-features">
-          <li>Dynamic graph topology with source/target path highlighting</li>
-          <li>FTP data pipeline for live network information feeds</li>
-          <li>Multi-path visualisation with second-path overlays</li>
-          <li>Telegram notification bot for alert dispatch</li>
-          <li>Integrated path-analyzer module support</li>
-        </ul>
-        <div class="card-tags">
-          <span class="tag">Streamlit</span>
-          <span class="tag">NetworkX</span>
-          <span class="tag">PyVis</span>
-          <span class="tag">FTP</span>
-          <span class="tag">Telegram Bot</span>
-        </div>
+      <div class="p-card" style="--ac:#2979ff" data-cat="dash">
+        <div class="p-top"><div class="p-icon">📡</div><span class="p-badge b-dash">Dashboard</span></div>
+        <div class="p-title">LinkTrack</div>
+        <div class="p-desc">Core network link tracking dashboard with graph-based topology visualisation, FTP-sourced data, and multi-path analysis with Telegram alerting.</div>
+        <ul class="p-feats"><li>Dynamic graph topology with path highlighting</li><li>FTP data pipeline for live network feeds</li><li>Multi-path visualisation with second-path overlays</li><li>Telegram notification bot for alert dispatch</li></ul>
+        <div class="p-tags"><span class="tag">NetworkX</span><span class="tag">PyVis</span><span class="tag">FTP</span><span class="tag">Telegram Bot</span></div>
       </div>
 
-      <!-- PoP MANAGEMENT -->
-      <div class="project-card" style="--accent-color: #10b981;">
-        <div class="card-top">
-          <div class="card-icon">🗺️</div>
-          <span class="card-badge badge-platform">Platform</span>
-        </div>
-        <div class="card-title">PoP Management</div>
-        <div class="card-desc">
-          Point-of-Presence lifecycle management platform with geospatial mapping, site comparison, 
-          and hostname change detection. Tracks infrastructure shifts over time using date-stamped FTP snapshots 
-          and provides a full ticket management workflow.
-        </div>
-        <ul class="card-features">
-          <li>Pydeck 3D geospatial map with site clustering</li>
-          <li>Automated hostname change detection across daily snapshots</li>
-          <li>Site categorisation and shifting-site detection logic</li>
-          <li>Ticket tracking database with JSON persistence</li>
-          <li>Parallel FTP file download for fast data refreshes</li>
-        </ul>
-        <div class="card-tags">
-          <span class="tag">Streamlit</span>
-          <span class="tag">Pydeck</span>
-          <span class="tag">Plotly</span>
-          <span class="tag">GeoPandas</span>
-          <span class="tag">FTP</span>
-        </div>
+      <div class="p-card" style="--ac:#00e676" data-cat="platform">
+        <div class="p-top"><div class="p-icon">🗺️</div><span class="p-badge b-platform">Platform</span></div>
+        <div class="p-title">PoP Management</div>
+        <div class="p-desc">Point-of-Presence lifecycle management with 3D geospatial mapping, site comparison, hostname change detection, and a full ticketing workflow.</div>
+        <ul class="p-feats"><li>Pydeck 3D geospatial map with site clustering</li><li>Automated hostname change detection across daily snapshots</li><li>Ticket tracking database with JSON persistence</li><li>Parallel FTP download for fast data refreshes</li></ul>
+        <div class="p-tags"><span class="tag">Pydeck</span><span class="tag">Plotly</span><span class="tag">GeoPandas</span><span class="tag">FTP</span></div>
       </div>
 
-      <!-- TASKPILOT -->
-      <div class="project-card" style="--accent-color: #f59e0b;">
-        <div class="card-top">
-          <div class="card-icon">✈️</div>
-          <span class="card-badge badge-tool">Tool</span>
-        </div>
-        <div class="card-title">TaskPilot v2</div>
-        <div class="card-desc">
-          Task and work-order management system for NOC operations. Features FID-level assignment tracking, 
-          priority management, SLA timers, and a polished UI complete with Lottie animations — 
-          backed by a SQLite database.
-        </div>
-        <ul class="card-features">
-          <li>Work-order assignment tracking with time-since-assignment counters</li>
-          <li>FID-level dependency and submission status visibility</li>
-          <li>Custom Lottie animation integration for rich UX</li>
-          <li>PIL-based image generation for reports</li>
-          <li>SQLite backend with hashed session management</li>
-        </ul>
-        <div class="card-tags">
-          <span class="tag">Streamlit</span>
-          <span class="tag">SQLite</span>
-          <span class="tag">Pandas</span>
-          <span class="tag">Pillow</span>
-          <span class="tag">Lottie</span>
-        </div>
+      <div class="p-card" style="--ac:#ffab00" data-cat="tool">
+        <div class="p-top"><div class="p-icon">✈️</div><span class="p-badge b-tool">Tool</span></div>
+        <div class="p-title">TaskPilot v2</div>
+        <div class="p-desc">Task and work-order management system with FID-level assignment tracking, priority management, SLA timers, and a SQLite backend.</div>
+        <ul class="p-feats"><li>Work-order assignment tracking with SLA countdown</li><li>FID dependency and submission status visibility</li><li>Lottie animation integration for polished UX</li><li>PIL-based image generation for reports</li></ul>
+        <div class="p-tags"><span class="tag">SQLite</span><span class="tag">Pandas</span><span class="tag">Pillow</span><span class="tag">Lottie</span></div>
       </div>
 
-      <!-- CATALYST -->
-      <div class="project-card" style="--accent-color: #f43f5e;">
-        <div class="card-top">
-          <div class="card-icon">⚡</div>
-          <span class="card-badge badge-auto">Automation</span>
-        </div>
-        <div class="card-title">Catalyst</div>
-        <div class="card-desc">
-          Network automation powerhouse for bulk device operations. Connects to network nodes via SSH, 
-          automates browser workflows with Selenium, scrapes NMS portals, and manages FTP-based node 
-          information — all behind a secure authenticated Streamlit UI.
-        </div>
-        <ul class="card-features">
-          <li>Bulk SSH command execution across multiple devices via Paramiko</li>
-          <li>Selenium-driven browser automation for portal interactions</li>
-          <li>FTP-based node information management with CRUD ops</li>
-          <li>Concurrent task execution with ThreadPoolExecutor</li>
-          <li>Admin panel with activity logging and audit trail</li>
-        </ul>
-        <div class="card-tags">
-          <span class="tag">Streamlit</span>
-          <span class="tag">Paramiko</span>
-          <span class="tag">Selenium</span>
-          <span class="tag">FTP</span>
-          <span class="tag">BeautifulSoup</span>
-        </div>
+      <div class="p-card" style="--ac:#ff1744" data-cat="auto">
+        <div class="p-top"><div class="p-icon">⚡</div><span class="p-badge b-auto">Automation</span></div>
+        <div class="p-title">Catalyst</div>
+        <div class="p-desc">Network automation powerhouse for bulk device operations via SSH, Selenium-driven portal automation, and FTP node management behind a secure authenticated UI.</div>
+        <ul class="p-feats"><li>Bulk SSH command execution via Paramiko</li><li>Selenium browser automation for portal workflows</li><li>Admin panel with audit trail logging</li><li>Concurrent tasks with ThreadPoolExecutor</li></ul>
+        <div class="p-tags"><span class="tag">Paramiko</span><span class="tag">Selenium</span><span class="tag">FTP</span><span class="tag">BeautifulSoup</span></div>
       </div>
 
-      <!-- CONNECTIVITY TYPE APP -->
-      <div class="project-card" style="--accent-color: #a78bfa;">
-        <div class="card-top">
-          <div class="card-icon">📍</div>
-          <span class="card-badge badge-dash">Dashboard</span>
-        </div>
-        <div class="card-title">Connectivity Type Analyzer</div>
-        <div class="card-desc">
-          Geospatial tool for classifying and visualising connectivity types across service zones. 
-          Uses Shapely geometry to compute point-in-polygon coverage, rendering results on an interactive 
-          Pydeck map with a custom embedded font identity.
-        </div>
-        <ul class="card-features">
-          <li>Point-in-polygon coverage classification with Shapely</li>
-          <li>Pydeck interactive 3D map with layer controls</li>
-          <li>GeoPandas spatial data processing pipeline</li>
-          <li>Custom Wilker font embedded via base64 for brand identity</li>
-          <li>Activity logging with JSON persistence</li>
-        </ul>
-        <div class="card-tags">
-          <span class="tag">Streamlit</span>
-          <span class="tag">Pydeck</span>
-          <span class="tag">GeoPandas</span>
-          <span class="tag">Shapely</span>
-          <span class="tag">GeoPy</span>
-        </div>
+      <div class="p-card" style="--ac:#ce93d8" data-cat="dash">
+        <div class="p-top"><div class="p-icon">📍</div><span class="p-badge b-dash">Dashboard</span></div>
+        <div class="p-title">Connectivity Type Analyzer</div>
+        <div class="p-desc">Geospatial tool classifying connectivity types across service zones using Shapely point-in-polygon coverage, rendered on an interactive Pydeck map.</div>
+        <ul class="p-feats"><li>Point-in-polygon coverage classification with Shapely</li><li>Pydeck interactive 3D map with layer controls</li><li>GeoPandas spatial data processing pipeline</li><li>JSON activity logging with user audit trail</li></ul>
+        <div class="p-tags"><span class="tag">Pydeck</span><span class="tag">GeoPandas</span><span class="tag">Shapely</span><span class="tag">GeoPy</span></div>
       </div>
 
-      <!-- STL DAILY REPORTING -->
-      <div class="project-card" style="--accent-color: #34d399;">
-        <div class="card-top">
-          <div class="card-icon">🗼</div>
-          <span class="card-badge badge-auto">Automation</span>
-        </div>
-        <div class="card-title">STL Daily KPI Reporter</div>
-        <div class="card-desc">
-          Automated daily KPI report generator for STL network operations. Ingests raw Excel workbooks, 
-          processes and formats key performance metrics, and produces a download-ready output report — 
-          replacing manual daily reporting workflows.
-        </div>
-        <ul class="card-features">
-          <li>openpyxl-powered Excel processing with template filling</li>
-          <li>KPI metric extraction with regex-based field parsing</li>
-          <li>Admin-gated file manager for report archive browsing</li>
-          <li>Auto-formatted downloadable output with branded styling</li>
-        </ul>
-        <div class="card-tags">
-          <span class="tag">Streamlit</span>
-          <span class="tag">openpyxl</span>
-          <span class="tag">Pandas</span>
-          <span class="tag">Excel Automation</span>
-        </div>
+      <div class="p-card" style="--ac:#00e676" data-cat="auto">
+        <div class="p-top"><div class="p-icon">🗼</div><span class="p-badge b-auto">Automation</span></div>
+        <div class="p-title">STL Daily KPI Reporter</div>
+        <div class="p-desc">Automated daily KPI report generator that ingests raw Excel workbooks, processes performance metrics, and produces formatted downloadable output — eliminating manual reporting.</div>
+        <ul class="p-feats"><li>openpyxl-powered Excel processing with template filling</li><li>KPI metric extraction with regex-based parsing</li><li>Admin-gated file manager for archive browsing</li><li>Branded downloadable output generation</li></ul>
+        <div class="p-tags"><span class="tag">openpyxl</span><span class="tag">Pandas</span><span class="tag">Excel Automation</span></div>
       </div>
 
-      <!-- SCRIPT SNATCHER -->
-      <div class="project-card" style="--accent-color: #fbbf24;">
-        <div class="card-top">
-          <div class="card-icon">📜</div>
-          <span class="card-badge badge-tool">Tool</span>
-        </div>
-        <div class="card-title">Script Snatcher</div>
-        <div class="card-desc">
-          Internal script discovery and retrieval tool. Engineers search a centralised FTP repository 
-          by keyword, preview matches, and download exactly the script they need — with full search 
-          and download audit logging built in.
-        </div>
-        <ul class="card-features">
-          <li>FTP repository search with keyword matching</li>
-          <li>One-click script download with filename tracking</li>
-          <li>Persistent search and download count audit log</li>
-          <li>Admin view for usage analytics and log management</li>
-        </ul>
-        <div class="card-tags">
-          <span class="tag">Streamlit</span>
-          <span class="tag">FTP</span>
-          <span class="tag">Pandas</span>
-          <span class="tag">Logging</span>
-        </div>
+      <div class="p-card" style="--ac:#ffab00" data-cat="tool">
+        <div class="p-top"><div class="p-icon">📜</div><span class="p-badge b-tool">Tool</span></div>
+        <div class="p-title">Script Snatcher</div>
+        <div class="p-desc">Internal script discovery tool. Engineers search a centralised FTP repository by keyword and download exactly what they need, with full search and download audit logging.</div>
+        <ul class="p-feats"><li>FTP repository keyword search and file retrieval</li><li>Persistent search and download count audit log</li><li>Admin analytics view for usage tracking</li></ul>
+        <div class="p-tags"><span class="tag">FTP</span><span class="tag">Pandas</span><span class="tag">Logging</span></div>
       </div>
 
-    </div><!-- /projects-grid -->
+    </div>
+  </div>
+</section>
+
+<!-- INFRASTRUCTURE -->
+<section id="infra">
+  <div class="wrap">
+    <div class="s-label reveal">Infrastructure</div>
+    <h2 class="s-title reveal">Server &amp; Virtualisation</h2>
+    <p class="s-sub reveal">Beyond the code — hands-on server-side infrastructure setup and management.</p>
+    <div class="infra-grid">
+      <div class="infra-card reveal">
+        <div class="infra-icon">🖥️</div>
+        <div class="infra-title">Proxmox VE</div>
+        <div class="infra-desc">Designed and deployed bare-metal Proxmox Virtual Environment setups for hosting internal tools and services — full server lifecycle from OS installation to network configuration.</div>
+        <ul class="infra-list">
+          <li>Proxmox VE installation and node configuration</li>
+          <li>Storage pool setup (LVM, ZFS) and disk management</li>
+          <li>Network bridge and VLAN configuration for VMs</li>
+          <li>Snapshot management and VM backup scheduling</li>
+          <li>Web UI access control and user permission setup</li>
+        </ul>
+      </div>
+      <div class="infra-card reveal reveal-delay-1">
+        <div class="infra-icon">⚙️</div>
+        <div class="infra-title">VM &amp; Logical Networking</div>
+        <div class="infra-desc">Provisioned and managed Virtual Machines for Streamlit apps, internal services, and development environments — with logical network separation and routing between them.</div>
+        <ul class="infra-list">
+          <li>Ubuntu/Debian VM provisioning and hardening</li>
+          <li>Logical network segmentation between VMs</li>
+          <li>Static IP assignment and internal DNS setup</li>
+          <li>Service deployment (Streamlit, FTP, SSH servers)</li>
+          <li>Firewall rules and port-forwarding configuration</li>
+          <li>Resource allocation tuning (CPU, RAM, storage)</li>
+        </ul>
+      </div>
+    </div>
   </div>
 </section>
 
 <!-- SKILLS -->
 <section id="skills">
   <div class="wrap">
-    <div class="section-label">Stack</div>
-    <h2 class="section-title">Technologies</h2>
-    <p class="section-sub">Libraries and tools used across all projects.</p>
-
+    <div class="s-label reveal">Stack</div>
+    <h2 class="s-title reveal">Technologies</h2>
+    <p class="s-sub reveal">The full toolkit across all projects and infrastructure work.</p>
     <div class="skills-grid">
-      <div class="skill-pill"><span class="skill-icon">🐍</span><div><div class="skill-name">Python</div><div class="skill-cat">Core language</div></div></div>
-      <div class="skill-pill"><span class="skill-icon">🎈</span><div><div class="skill-name">Streamlit</div><div class="skill-cat">Web UI framework</div></div></div>
-      <div class="skill-pill"><span class="skill-icon">🕸️</span><div><div class="skill-name">NetworkX</div><div class="skill-cat">Graph analysis</div></div></div>
-      <div class="skill-pill"><span class="skill-icon">🔭</span><div><div class="skill-name">PyVis</div><div class="skill-cat">Graph visualisation</div></div></div>
-      <div class="skill-pill"><span class="skill-icon">🗺️</span><div><div class="skill-name">Pydeck</div><div class="skill-cat">Geospatial maps</div></div></div>
-      <div class="skill-pill"><span class="skill-icon">🌍</span><div><div class="skill-name">GeoPandas</div><div class="skill-cat">Spatial data</div></div></div>
-      <div class="skill-pill"><span class="skill-icon">📐</span><div><div class="skill-name">Shapely</div><div class="skill-cat">Geometry engine</div></div></div>
-      <div class="skill-pill"><span class="skill-icon">📊</span><div><div class="skill-name">Plotly</div><div class="skill-cat">Interactive charts</div></div></div>
-      <div class="skill-pill"><span class="skill-icon">🐼</span><div><div class="skill-name">Pandas</div><div class="skill-cat">Data processing</div></div></div>
-      <div class="skill-pill"><span class="skill-icon">🔑</span><div><div class="skill-name">Paramiko</div><div class="skill-cat">SSH automation</div></div></div>
-      <div class="skill-pill"><span class="skill-icon">🤖</span><div><div class="skill-name">Selenium</div><div class="skill-cat">Browser automation</div></div></div>
-      <div class="skill-pill"><span class="skill-icon">🗄️</span><div><div class="skill-name">SQLite</div><div class="skill-cat">Local database</div></div></div>
-      <div class="skill-pill"><span class="skill-icon">📁</span><div><div class="skill-name">FTP / ftplib</div><div class="skill-cat">Data transport</div></div></div>
-      <div class="skill-pill"><span class="skill-icon">📣</span><div><div class="skill-name">Telegram Bot API</div><div class="skill-cat">Alerting</div></div></div>
-      <div class="skill-pill"><span class="skill-icon">📗</span><div><div class="skill-name">openpyxl</div><div class="skill-cat">Excel processing</div></div></div>
-      <div class="skill-pill"><span class="skill-icon">🌐</span><div><div class="skill-name">BeautifulSoup</div><div class="skill-cat">Web scraping</div></div></div>
+      <div class="sk-pill reveal"><span class="sk-icon">🐍</span><div><div class="sk-name">Python</div><div class="sk-cat">Core language</div></div></div>
+      <div class="sk-pill reveal"><span class="sk-icon">🎈</span><div><div class="sk-name">Streamlit</div><div class="sk-cat">Web UI framework</div></div></div>
+      <div class="sk-pill reveal"><span class="sk-icon">🕸️</span><div><div class="sk-name">NetworkX</div><div class="sk-cat">Graph analysis</div></div></div>
+      <div class="sk-pill reveal"><span class="sk-icon">🔭</span><div><div class="sk-name">PyVis</div><div class="sk-cat">Graph visualisation</div></div></div>
+      <div class="sk-pill reveal"><span class="sk-icon">🗺️</span><div><div class="sk-name">Pydeck</div><div class="sk-cat">Geospatial maps</div></div></div>
+      <div class="sk-pill reveal"><span class="sk-icon">🌍</span><div><div class="sk-name">GeoPandas</div><div class="sk-cat">Spatial data</div></div></div>
+      <div class="sk-pill reveal"><span class="sk-icon">📐</span><div><div class="sk-name">Shapely</div><div class="sk-cat">Geometry engine</div></div></div>
+      <div class="sk-pill reveal"><span class="sk-icon">📊</span><div><div class="sk-name">Plotly</div><div class="sk-cat">Interactive charts</div></div></div>
+      <div class="sk-pill reveal"><span class="sk-icon">🐼</span><div><div class="sk-name">Pandas</div><div class="sk-cat">Data processing</div></div></div>
+      <div class="sk-pill reveal"><span class="sk-icon">🔑</span><div><div class="sk-name">Paramiko (SSH)</div><div class="sk-cat">Device automation</div></div></div>
+      <div class="sk-pill reveal"><span class="sk-icon">🤖</span><div><div class="sk-name">Selenium</div><div class="sk-cat">Browser automation</div></div></div>
+      <div class="sk-pill reveal"><span class="sk-icon">🗄️</span><div><div class="sk-name">SQLite</div><div class="sk-cat">Local database</div></div></div>
+      <div class="sk-pill reveal"><span class="sk-icon">📁</span><div><div class="sk-name">FTP / ftplib</div><div class="sk-cat">Data transport</div></div></div>
+      <div class="sk-pill reveal"><span class="sk-icon">📣</span><div><div class="sk-name">Telegram Bot API</div><div class="sk-cat">Alerting</div></div></div>
+      <div class="sk-pill reveal"><span class="sk-icon">📗</span><div><div class="sk-name">openpyxl</div><div class="sk-cat">Excel automation</div></div></div>
+      <div class="sk-pill reveal"><span class="sk-icon">🌐</span><div><div class="sk-name">BeautifulSoup</div><div class="sk-cat">Web scraping</div></div></div>
+      <div class="sk-pill reveal"><span class="sk-icon">🖥️</span><div><div class="sk-name">Proxmox VE</div><div class="sk-cat">Hypervisor</div></div></div>
+      <div class="sk-pill reveal"><span class="sk-icon">⚙️</span><div><div class="sk-name">Linux / Ubuntu</div><div class="sk-cat">Server OS</div></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- RECRUITER TIPS (delete this whole section once done) -->
+<section id="add" style="border-top:1px dashed var(--border)">
+  <div class="wrap">
+    <div class="s-label reveal" style="color:var(--amber)">💡 Recruiter Tips</div>
+    <h2 class="s-title reveal">What to Add Next</h2>
+    <p class="s-sub reveal">These upgrades will significantly improve recruiter appeal. Delete this section once done.</p>
+    <div class="add-grid">
+      <div class="add-card reveal"><div class="add-num">01 / Photo</div><div class="add-title">Professional Photo</div><div class="add-body">Replace the About placeholder with a real headshot. Portfolios with a face get significantly more engagement. Plain background and good lighting is all you need.</div></div>
+      <div class="add-card reveal reveal-delay-1"><div class="add-num">02 / Impact Numbers</div><div class="add-title">Quantify Your Impact</div><div class="add-body">"Reduced daily reporting time from 2 hours to 5 minutes." "Used by 30 engineers daily." Numbers make your work feel real and tangible to recruiters — add them wherever you can.</div></div>
+      <div class="add-card reveal reveal-delay-2"><div class="add-num">03 / LinkedIn</div><div class="add-title">LinkedIn Profile Link</div><div class="add-body">Add your LinkedIn URL to the Contact section. Most recruiters go straight there after seeing a portfolio. Make sure your LinkedIn matches what's here.</div></div>
+      <div class="add-card reveal"><div class="add-num">04 / Certifications</div><div class="add-title">Certs &amp; Education</div><div class="add-body">Add a small section for certifications (CCNA, CCNP, etc.) and your degree. Even in-progress certs are worth listing — they signal direction and commitment.</div></div>
+      <div class="add-card reveal reveal-delay-1"><div class="add-num">05 / Screenshots</div><div class="add-title">App Screenshots or GIFs</div><div class="add-body">The single biggest upgrade. A screenshot or short GIF of each tool's UI makes your work 10× more impressive than reading about it. Add them inside each project card.</div></div>
+      <div class="add-card reveal reveal-delay-2"><div class="add-num">06 / Dates &amp; Company</div><div class="add-title">Timeline Details</div><div class="add-body">Fill in your actual company name, start/end dates, and team size in the Career Journey section. Vague timelines make recruiters nervous — specifics build trust.</div></div>
     </div>
   </div>
 </section>
@@ -942,24 +511,90 @@
 <!-- CONTACT -->
 <section id="contact">
   <div class="wrap">
-    <div class="contact-box">
-      <div class="section-label" style="justify-content:center; margin-bottom:16px;">Contact</div>
-      <h2 class="section-title">Let's Connect</h2>
-      <p>
-        Interested in collaboration, questions about these tools, or just want to talk shop on 
-        network planning, design, and Python automation?
-      </p>
-      <div class="hero-actions" style="justify-content:center;">
-        <a class="btn btn-primary" href="mailto:your@email.com">Send an Email</a>
-        <a class="btn btn-ghost" href="https://github.com/yourusername" target="_blank">GitHub Profile</a>
+    <div class="contact-inner reveal">
+      <div class="s-label" style="justify-content:center;margin-bottom:20px">Contact</div>
+      <h2 class="s-title">Let's Connect</h2>
+      <p>Open to collaboration, freelance tool-building, or just a conversation about network engineering and Python automation.</p>
+      <div class="hero-actions" style="justify-content:center">
+        <a class="btn btn-primary" href="mailto:your@email.com">Send an Email ↗</a>
+        <a class="btn btn-outline" href="https://github.com/sgscomm" target="_blank">GitHub ↗</a>
+      </div>
+      <div class="social-row">
+        <a class="social-btn" href="https://linkedin.com/in/yourprofile" target="_blank">💼 LinkedIn</a>
+        <a class="social-btn" href="https://github.com/sgscomm" target="_blank">🐙 GitHub</a>
+        <a class="social-btn" href="mailto:your@email.com">✉️ Email</a>
       </div>
     </div>
   </div>
 </section>
 
 <footer>
-  <span>Built with HTML · Hosted on GitHub Pages</span> &nbsp;·&nbsp; Updated 2025
+  <em>Shadman Gawhar</em> &nbsp;·&nbsp; Network Planning &amp; Design Engineer &nbsp;·&nbsp; Built with HTML · Hosted on <em>GitHub Pages</em>
 </footer>
 
+<script>
+/* CANVAS NETWORK BACKGROUND */
+(function(){
+  const canvas=document.getElementById('bg-canvas');
+  const ctx=canvas.getContext('2d');
+  let W,H,nodes=[];
+  const COUNT=55,CONN=165,SPD=0.28;
+  function resize(){W=canvas.width=window.innerWidth;H=canvas.height=window.innerHeight}
+  function init(){nodes=[];for(let i=0;i<COUNT;i++)nodes.push({x:Math.random()*W,y:Math.random()*H,vx:(Math.random()-.5)*SPD,vy:(Math.random()-.5)*SPD,r:Math.random()*1.8+1})}
+  function frame(){
+    ctx.clearRect(0,0,W,H);
+    for(let i=0;i<nodes.length;i++){
+      for(let j=i+1;j<nodes.length;j++){
+        const dx=nodes[i].x-nodes[j].x,dy=nodes[i].y-nodes[j].y,d=Math.hypot(dx,dy);
+        if(d<CONN){ctx.beginPath();ctx.strokeStyle=`rgba(0,229,255,${(1-d/CONN)*.3})`;ctx.lineWidth=.7;ctx.moveTo(nodes[i].x,nodes[i].y);ctx.lineTo(nodes[j].x,nodes[j].y);ctx.stroke()}
+      }
+    }
+    nodes.forEach(n=>{ctx.beginPath();ctx.arc(n.x,n.y,n.r,0,Math.PI*2);ctx.fillStyle='rgba(0,229,255,.5)';ctx.fill();n.x+=n.vx;n.y+=n.vy;if(n.x<0||n.x>W)n.vx*=-1;if(n.y<0||n.y>H)n.vy*=-1});
+    requestAnimationFrame(frame);
+  }
+  resize();init();frame();
+  window.addEventListener('resize',()=>{resize();init()});
+})();
+
+/* SCROLL PROGRESS */
+const bar=document.getElementById('progress-bar');
+window.addEventListener('scroll',()=>{bar.style.width=(window.scrollY/(document.body.scrollHeight-window.innerHeight)*100)+'%'},{passive:true});
+
+/* NAV SCROLLED */
+const nav=document.getElementById('nav');
+window.addEventListener('scroll',()=>nav.classList.toggle('scrolled',window.scrollY>40),{passive:true});
+
+/* REVEAL */
+const obs=new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible');obs.unobserve(e.target)}})},{threshold:0.12});
+document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
+
+/* COUNTER */
+function animateCount(el){
+  const target=parseInt(el.dataset.count),suffix=el.dataset.suffix||'';
+  let cur=0;const inc=target/100;
+  const t=setInterval(()=>{cur=Math.min(cur+inc,target);el.textContent=Math.floor(cur)+suffix;if(cur>=target)clearInterval(t)},16);
+}
+const cObs=new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting){animateCount(e.target);cObs.unobserve(e.target)}})},{threshold:0.5});
+document.querySelectorAll('[data-count]').forEach(el=>cObs.observe(el));
+
+/* PROJECT FILTER */
+document.querySelectorAll('.filter-btn').forEach(btn=>{
+  btn.addEventListener('click',()=>{
+    document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'));
+    btn.classList.add('active');
+    const f=btn.dataset.filter;
+    document.querySelectorAll('.p-card').forEach(c=>c.style.display=(f==='all'||c.dataset.cat===f)?'':'none');
+  });
+});
+
+/* CARD GLOW */
+document.querySelectorAll('.p-card').forEach(card=>{
+  card.addEventListener('mousemove',e=>{
+    const r=card.getBoundingClientRect();
+    card.style.setProperty('--mx',((e.clientX-r.left)/r.width*100)+'%');
+    card.style.setProperty('--my',((e.clientY-r.top)/r.height*100)+'%');
+  });
+});
+</script>
 </body>
 </html>
